@@ -1,0 +1,14 @@
+{
+    "name": "@botfic/tracker",
+    "version": "0.1.0",
+    "private": true,
+    "main": "./dist/botfic.js",
+    "scripts": {
+        "build": "esbuild src/index.ts --bundle --minify --outfile=dist/botfic.js --format=iife",
+        "dev": "esbuild src/index.ts --bundle --outfile=dist/botfic.js --format=iife --watch"
+    },
+    "devDependencies": {
+        "esbuild": "^0.20.0",
+        "typescript": "^5.3.0"
+    }
+}

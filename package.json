@@ -1,0 +1,14 @@
+{
+  "name": "botfic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bot-first analytics platform",
+  "scripts": {
+    "dev": "cd apps/web && npm run dev",
+    "build": "cd apps/web && npm run build",
+    "install:web": "cd apps/web && npm install"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

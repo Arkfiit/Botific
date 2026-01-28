@@ -1,0 +1,175 @@
+// Prisma Schema for Botfic
+// Bot-First Analytics Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ ORGANIZATIONS ============
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  plan      Plan     @default(STARTER)
+  stripeCustomerId String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sites Site[]
+  users User[]
+}
+
+model User {
+  id             String       @id @default(cuid())
+  email          String       @unique
+  passwordHash   String
+  name           String?
+  role           Role         @default(MEMBER)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Site {
+  id             String       @id @default(cuid())
+  name           String
+  domain         String
+  trackingId     String       @unique @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  sessions     Session[]
+  events       Event[]
+  dailyMetrics DailyMetrics[]
+}
+
+// ============ TRACKING ============
+
+model Session {
+  id        String  @id @default(cuid())
+  siteId    String
+  site      Site    @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  visitorId String
+
+  // Classification
+  label      Label     @default(UNKNOWN)
+  confidence Int       @default(0)
+  botName    String?
+  botCategory String?
+  riskLevel  RiskLevel @default(LOW)
+
+  // Session data
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+  duration  Int?
+  pageViews Int       @default(0)
+
+  // Source
+  userAgent String   @db.Text
+  ip        String?
+  country   String?
+  city      String?
+  referrer  String?
+
+  // Behavior signals
+  hasMouseEvents  Boolean @default(false)
+  hasScrollEvents Boolean @default(false)
+  jsEnabled       Boolean @default(true)
+
+  events Event[]
+
+  @@index([siteId, startedAt])
+  @@index([siteId, label])
+  @@index([visitorId])
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  type      String
+  url       String
+  data      Json?
+  timestamp DateTime @default(now())
+
+  @@index([siteId, timestamp])
+  @@index([sessionId])
+}
+
+// ============ METRICS ============
+
+model DailyMetrics {
+  id     String   @id @default(cuid())
+  siteId String
+  site   Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
+
+  // Total counts
+  totalSessions     Int @default(0)
+  totalPageViews    Int @default(0)
+
+  // By label
+  humanSessions     Int @default(0)
+  aiAgentSessions   Int @default(0)
+  searchBotSessions Int @default(0)
+  badBotSessions    Int @default(0)
+  unknownSessions   Int @default(0)
+
+  // Standard metrics
+  avgDuration    Float @default(0)
+  bounceRate     Float @default(0)
+  conversionRate Float @default(0)
+
+  // True metrics (humans only)
+  trueAvgDuration    Float @default(0)
+  trueBounceRate     Float @default(0)
+  trueConversionRate Float @default(0)
+
+  // AI Visibility
+  aiVisibilityScore Int @default(0)
+
+  @@unique([siteId, date])
+  @@index([siteId, date])
+}
+
+// ============ ENUMS ============
+
+enum Plan {
+  STARTER
+  GROWTH
+  SCALE
+  ENTERPRISE
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Label {
+  HUMAN
+  AI_AGENT
+  SEARCH_BOT
+  SEO_TOOL
+  BAD_BOT
+  UNKNOWN
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
