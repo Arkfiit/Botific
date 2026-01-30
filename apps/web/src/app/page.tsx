@@ -116,170 +116,150 @@ function Navbar() {
 function HeroSection() {
     return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-hero-gradient" />
-            <div className="absolute inset-0 bg-mesh-gradient" />
-            <div className="absolute inset-0 bg-grid-pattern opacity-40" />
+            {/* Background Image & Effects */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-dark-950/80 z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent z-10" />
+                <img
+                    src="/images/hero-bg.png"
+                    alt="Data Visualization"
+                    className="w-full h-full object-cover opacity-60"
+                />
+            </div>
 
-            {/* Floating orbs */}
-            <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary-500/20 rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-500/15 rounded-full blur-3xl animate-float animation-delay-300" />
+            {/* Spotlight Effect */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-primary-500/20 blur-[120px] rounded-full z-0 opacity-50" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-                <div className="text-center max-w-4xl mx-auto">
+                <div className="text-center max-w-5xl mx-auto">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-warning-500/10 border border-warning-500/20 rounded-full mb-8 animate-fade-in">
-                        <AlertTriangle className="w-4 h-4 text-warning-400" />
-                        <span className="text-sm text-warning-300">51% of your traffic is now bots — this isn't just security, it's a marketing problem</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-dark-800/80 backdrop-blur-md border border-dark-600 rounded-full mb-8 animate-fade-in shadow-lg shadow-primary-500/10">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-success-500"></span>
+                        </span>
+                        <span className="text-sm text-dark-200">New: Agentic Commerce Tracking Live</span>
                     </div>
 
                     {/* Main Headline */}
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in-up">
-                        <span className="text-white">Real Metrics.</span>
-                        <br />
-                        <span className="text-white">Clear Traffic.</span>
-                        <br />
-                        <span className="gradient-text">Real Opportunities.</span>
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 animate-fade-in-up tracking-tight">
+                        <span className="text-white drop-shadow-xl">Analytics for the </span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-white to-accent-300 animate-gradient-x">Agentic Web.</span>
                     </h1>
 
                     {/* Subheadline - THE COMPLETE PICTURE */}
-                    <p className="text-lg md:text-xl text-dark-300 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-200">
-                        See your <span className="text-success-400 font-semibold">true conversion rates</span> (human-only).
-                        Know exactly <span className="text-accent-400 font-semibold">who's visiting</span> — Human, AI Agent, Search Bot, or Bad Bot.
-                        Then <span className="text-primary-400 font-semibold">optimize for the bots that buy</span>.
+                    <p className="text-xl md:text-2xl text-dark-200 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-200 leading-relaxed font-light">
+                        The first analytics platform built to decode <span className="text-white font-medium">AI Agent</span> traffic.
+                        Isolate human users, measure true conversion, and <span className="text-primary-300 font-medium">optimize your site for the bots that buy</span>.
                     </p>
 
-                    {/* 3 Value Props */}
-                    <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-300">
-                        <div className="flex items-center justify-center gap-2 px-4 py-3 bg-success-500/10 border border-success-500/20 rounded-xl">
-                            <BarChart3 className="w-5 h-5 text-success-400" />
-                            <span className="text-success-300 font-medium">Real Metrics</span>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 px-4 py-3 bg-accent-500/10 border border-accent-500/20 rounded-xl">
-                            <Layers className="w-5 h-5 text-accent-400" />
-                            <span className="text-accent-300 font-medium">Clear Traffic Source</span>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 px-4 py-3 bg-primary-500/10 border border-primary-500/20 rounded-xl">
-                            <Rocket className="w-5 h-5 text-primary-400" />
-                            <span className="text-primary-300 font-medium">Opportunity Gaps</span>
-                        </div>
-                    </div>
+                    {/* Subheadline - THE COMPLETE PICTURE */}
+                    <p className="text-xl md:text-2xl text-dark-200 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-200 leading-relaxed font-light">
+                        Filter out the <span className="text-white font-medium">50%+ of bot traffic</span> polluting your analytics.
+                        Unlock <span className="text-primary-300 font-medium">true conversion rates</span> and discover the AI agents already researching your product.
+                    </p>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in-up animation-delay-400">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up animation-delay-400">
                         <Link
                             href="/signup"
-                            className="group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-400 hover:to-accent-400 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:shadow-glow-lg flex items-center justify-center gap-2"
+                            className="group relative px-8 py-4 bg-white text-dark-950 font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"
                         >
-                            See Your Real Traffic
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <span className="relative z-10">Start 14-Day Free Trial</span>
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
                         </Link>
                         <Link
                             href="#demo"
-                            className="group w-full sm:w-auto px-8 py-4 bg-dark-800/50 hover:bg-dark-700/50 border border-dark-600 hover:border-dark-500 text-white font-semibold text-lg rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                            className="group px-8 py-4 bg-dark-800/40 backdrop-blur-md hover:bg-dark-700/40 border border-dark-600 hover:border-dark-500 text-white font-semibold text-lg rounded-full transition-all duration-300 flex items-center justify-center gap-2"
                         >
-                            <Play className="w-5 h-5" />
+                            <Play className="w-5 h-5 fill-current" />
                             Watch Demo
                         </Link>
                     </div>
 
-                    {/* Trust indicators */}
-                    <div className="flex flex-wrap items-center justify-center gap-6 text-dark-400 text-sm animate-fade-in-up animation-delay-500">
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-success-500" />
-                            <span>5-minute setup</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-success-500" />
-                            <span>No credit card required</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-success-500" />
-                            <span>14-day free trial</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Hero Dashboard - Shows ALL 3 Value Props */}
-                <div className="mt-16 md:mt-24 relative animate-fade-in-up animation-delay-600">
-                    <div className="relative mx-auto max-w-5xl">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-success-500/20 via-accent-500/20 to-primary-500/20 rounded-2xl blur-2xl" />
-
-                        <div className="relative glass-card p-2 md:p-4">
-                            <div className="bg-dark-900 rounded-xl overflow-hidden">
-                                {/* Browser chrome */}
-                                <div className="flex items-center gap-2 px-4 py-3 border-b border-dark-700">
-                                    <div className="flex gap-1.5">
-                                        <div className="w-3 h-3 rounded-full bg-danger-500" />
-                                        <div className="w-3 h-3 rounded-full bg-warning-500" />
-                                        <div className="w-3 h-3 rounded-full bg-success-500" />
-                                    </div>
-                                    <div className="flex-1 flex justify-center">
-                                        <div className="px-4 py-1 bg-dark-800 rounded-lg text-xs text-dark-400">
-                                            app.botfic.com/dashboard
-                                        </div>
+                    {/* Hero Dashboard - 3D Perspective */}
+                    <div className="relative mt-8 animate-fade-in-up animation-delay-600 perspective-1000 group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
+                        <div className="relative bg-dark-900/90 backdrop-blur-xl border border-dark-700/50 rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-700 hover:rotate-x-2">
+                            {/* Browser chrome */}
+                            <div className="flex items-center gap-2 px-4 py-3 border-b border-dark-700/50 bg-dark-800/50">
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-danger-500/80" />
+                                    <div className="w-3 h-3 rounded-full bg-warning-500/80" />
+                                    <div className="w-3 h-3 rounded-full bg-success-500/80" />
+                                </div>
+                                <div className="flex-1 flex justify-center">
+                                    <div className="px-4 py-1 bg-dark-900/50 rounded-lg text-xs text-dark-400 font-mono">
+                                        app.botfic.com/dashboard/overview
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Dashboard - 3 Columns for 3 Value Props */}
-                                <div className="p-6 md:p-8">
-                                    <div className="grid md:grid-cols-3 gap-6">
-                                        {/* Column 1: Real Metrics */}
-                                        <div className="bg-dark-800/50 rounded-xl p-5 border border-success-500/30">
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className="w-8 h-8 rounded-lg bg-success-500/20 flex items-center justify-center">
-                                                    <BarChart3 className="w-4 h-4 text-success-400" />
-                                                </div>
-                                                <span className="text-success-400 font-semibold text-sm">TRUE METRICS</span>
+                            {/* Dashboard Content */}
+                            <div className="p-6 md:p-8">
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    {/* Column 1: Real Metrics */}
+                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-success-500/20 hover:border-success-500/40 transition-colors">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-success-500/20 to-success-900/20 flex items-center justify-center">
+                                                <BarChart3 className="w-5 h-5 text-success-400" />
                                             </div>
-                                            <div className="space-y-3">
-                                                <MetricCompare label="Conversion Rate" polluted="1.4%" real="3.8%" />
-                                                <MetricCompare label="Bounce Rate" polluted="72%" real="45%" />
-                                                <MetricCompare label="Avg. Duration" polluted="34s" real="3m 12s" />
+                                            <div>
+                                                <div className="text-xs text-dark-400 font-medium">TRUE METRICS</div>
+                                                <div className="text-white font-semibold">Human Only</div>
                                             </div>
                                         </div>
-
-                                        {/* Column 2: Traffic Breakdown */}
-                                        <div className="bg-dark-800/50 rounded-xl p-5 border border-accent-500/30">
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className="w-8 h-8 rounded-lg bg-accent-500/20 flex items-center justify-center">
-                                                    <PieChart className="w-4 h-4 text-accent-400" />
+                                        <div className="space-y-4">
+                                            <MetricCompare label="Conversion" polluted="1.4%" real="3.8%" />
+                                            <MetricCompare label="Bounce" polluted="72%" real="45%" />
+                                            <div className="pt-2 border-t border-dark-700/50">
+                                                <div className="flex justify-between text-xs">
+                                                    <span className="text-dark-400">Revenue Impact</span>
+                                                    <span className="text-success-400 font-mono font-bold">+$12,450/mo</span>
                                                 </div>
-                                                <span className="text-accent-400 font-semibold text-sm">TRAFFIC CLARITY</span>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <TrafficBar label="Human" pct={42} color="success" icon="👤" />
-                                                <TrafficBar label="AI Agent" pct={28} color="primary" icon="🤖" />
-                                                <TrafficBar label="Search Bot" pct={18} color="accent" icon="🔍" />
-                                                <TrafficBar label="Bad Bot" pct={12} color="danger" icon="⚠️" />
                                             </div>
                                         </div>
+                                    </div>
 
-                                        {/* Column 3: Opportunities */}
-                                        <div className="bg-dark-800/50 rounded-xl p-5 border border-primary-500/30">
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center">
-                                                    <Rocket className="w-4 h-4 text-primary-400" />
-                                                </div>
-                                                <span className="text-primary-400 font-semibold text-sm">OPPORTUNITIES</span>
+                                    {/* Column 2: Traffic Breakdown */}
+                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-primary-500/20 hover:border-primary-500/40 transition-colors">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-primary-900/20 flex items-center justify-center">
+                                                <PieChart className="w-5 h-5 text-primary-400" />
                                             </div>
-                                            <div className="space-y-3">
-                                                <OpportunityItem
-                                                    agent="ChatGPT"
-                                                    visits="1,234"
-                                                    trend="+45%"
-                                                />
-                                                <OpportunityItem
-                                                    agent="Perplexity"
-                                                    visits="856"
-                                                    trend="+67%"
-                                                />
-                                                <div className="mt-3 p-2 bg-primary-500/10 rounded-lg">
-                                                    <div className="text-xs text-primary-300">AI Visibility Score</div>
-                                                    <div className="flex items-baseline gap-1">
-                                                        <span className="text-2xl font-bold text-white">78</span>
-                                                        <span className="text-primary-400">/100</span>
-                                                    </div>
+                                            <div>
+                                                <div className="text-xs text-dark-400 font-medium">TRAFFIC SOURCE</div>
+                                                <div className="text-white font-semibold">Live Feed</div>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <TrafficBar label="Human Users" pct={42} color="success" icon="👤" />
+                                            <TrafficBar label="AI Agents" pct={28} color="primary" icon="🤖" />
+                                            <TrafficBar label="Search Bots" pct={18} color="accent" icon="🔍" />
+                                        </div>
+                                    </div>
+
+                                    {/* Column 3: Opportunities */}
+                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-accent-500/20 hover:border-accent-500/40 transition-colors">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-500/20 to-accent-900/20 flex items-center justify-center">
+                                                <Rocket className="w-5 h-5 text-accent-400" />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-dark-400 font-medium">AI OPPORTUNITIES</div>
+                                                <div className="text-white font-semibold">Agent Activity</div>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <OpportunityItem agent="ChatGPT-User" visits="1,234" trend="+45%" />
+                                            <OpportunityItem agent="PerplexityBot" visits="856" trend="+67%" />
+                                            <div className="mt-2 p-2.5 bg-accent-500/10 rounded-lg border border-accent-500/10">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-xs text-accent-300">Visibility Score</span>
+                                                    <span className="text-lg font-bold text-white">78<span className="text-xs text-dark-400 font-normal">/100</span></span>
+                                                </div>
+                                                <div className="w-full h-1.5 bg-dark-700 rounded-full mt-1">
+                                                    <div className="h-full w-[78%] bg-accent-500 rounded-full"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -435,20 +415,20 @@ function ProblemCard({ icon, stat, title, description, color }: { icon: React.Re
     )
 }
 
-// Solution Section - The 3 Pillars
+// SolutionSection - The 3 Pillars
 function SolutionSection() {
     return (
         <section id="solution" className="py-20 md:py-32 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-dark-900 to-dark-950" />
-            <div className="absolute inset-0 bg-mesh-gradient opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-950 to-dark-900" />
+            <div className="absolute inset-0 bg-mesh-gradient opacity-20" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
+                <div className="text-center mb-20 animate-fade-in-up">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-success-500/10 border border-success-500/20 rounded-full mb-6">
                         <CheckCircle2 className="w-4 h-4 text-success-400" />
                         <span className="text-sm text-success-300">The Bot-First Analytics Platform</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
                         Three Things You Need to <span className="gradient-text">Thrive in the Bot-First Era</span>
                     </h2>
                 </div>
@@ -456,95 +436,78 @@ function SolutionSection() {
                 {/* 3 Pillars */}
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Pillar 1: Real Metrics */}
-                    <div className="glass-card p-8 border-success-500/30">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-success-500 to-success-600 flex items-center justify-center text-white mb-6">
-                            <BarChart3 className="w-7 h-7" />
+                    <div className="group glass-card p-8 border-success-500/20 hover:border-success-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-success-500/10">
+                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-success-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <img src="/images/analytics-icon.png" alt="Analytics 3D Icon" className="w-full h-full object-contain relative z-10" />
                         </div>
                         <h3 className="text-2xl font-bold text-white mb-4">1. Real Metrics</h3>
-                        <p className="text-dark-300 mb-6">
+                        <p className="text-dark-300 mb-6 leading-relaxed">
                             Your "low conversion rate" might actually be a data quality problem. See exactly how bot traffic inflates sessions, distorts bounce rates, and makes your funnel look worse than it really is.
                         </p>
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-3 text-dark-300">
+                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
                                 <CheckCircle2 className="w-5 h-5 text-success-500" />
                                 <span>Human-only conversion rate</span>
                             </div>
-                            <div className="flex items-center gap-3 text-dark-300">
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
                                 <CheckCircle2 className="w-5 h-5 text-success-500" />
                                 <span>True bounce rate</span>
                             </div>
-                            <div className="flex items-center gap-3 text-dark-300">
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
                                 <CheckCircle2 className="w-5 h-5 text-success-500" />
                                 <span>Accurate session duration</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300">
-                                <CheckCircle2 className="w-5 h-5 text-success-500" />
-                                <span>Side-by-side comparison</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Pillar 2: Traffic Clarity */}
-                    <div className="glass-card p-8 border-accent-500/30">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-500 to-accent-600 flex items-center justify-center text-white mb-6">
-                            <Layers className="w-7 h-7" />
+                    <div className="group glass-card p-8 border-primary-500/20 hover:border-primary-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-500/10">
+                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-primary-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <img src="/images/bot-icon.png" alt="Bot Detection 3D Icon" className="w-full h-full object-contain relative z-10" />
                         </div>
                         <h3 className="text-2xl font-bold text-white mb-4">2. Traffic Clarity</h3>
-                        <p className="text-dark-300 mb-6">
+                        <p className="text-dark-300 mb-6 leading-relaxed">
                             Learn how to differentiate good bots (AI crawlers, shopping agents) from bad bots (fraudsters, scrapers). Understand why blocking all bots is no longer an option.
                         </p>
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-success-500/20 flex items-center justify-center">
-                                    <span>👤</span>
-                                </div>
-                                <span className="text-white font-medium">Human Visitors</span>
+                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-success-500/20 flex items-center justify-center text-xs">👤</div>
+                                <span>Human Visitors</span>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center">
-                                    <span>🤖</span>
-                                </div>
-                                <span className="text-white font-medium">AI Agents (ChatGPT, Claude...)</span>
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-primary-500/20 flex items-center justify-center text-xs">🤖</div>
+                                <span>AI Agents (ChatGPT, Claude...)</span>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-accent-500/20 flex items-center justify-center">
-                                    <span>🔍</span>
-                                </div>
-                                <span className="text-white font-medium">Search Bots (Google, Bing)</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-danger-500/20 flex items-center justify-center">
-                                    <span>⚠️</span>
-                                </div>
-                                <span className="text-white font-medium">Bad Bots (Scrapers, Fraud)</span>
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-accent-500/20 flex items-center justify-center text-xs">🔍</div>
+                                <span>Search Bots (Google, Bing)</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Pillar 3: Opportunity */}
-                    <div className="glass-card p-8 border-primary-500/30">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white mb-6">
-                            <Rocket className="w-7 h-7" />
+                    <div className="group glass-card p-8 border-accent-500/20 hover:border-accent-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-500/10">
+                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-accent-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <img src="/images/rocket-icon.png" alt="Opportunity 3D Icon" className="w-full h-full object-contain relative z-10" />
                         </div>
                         <h3 className="text-2xl font-bold text-white mb-4">3. Opportunity Gaps</h3>
-                        <p className="text-dark-300 mb-6">
+                        <p className="text-dark-300 mb-6 leading-relaxed">
                             AI agents don't just research — they buy. With agentic commerce projected to hit $300-500B by 2030, discover how platforms like ChatGPT and Perplexity are becoming the new point of sale.
                         </p>
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-3 text-dark-300">
-                                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
                                 <span>AI Visibility Score</span>
                             </div>
-                            <div className="flex items-center gap-3 text-dark-300">
-                                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
                                 <span>Which AI agents visit you</span>
                             </div>
-                            <div className="flex items-center gap-3 text-dark-300">
-                                <CheckCircle2 className="w-5 h-5 text-primary-500" />
-                                <span>Pages they access most</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300">
-                                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
                                 <span>Optimization recommendations</span>
                             </div>
                         </div>
@@ -718,17 +681,17 @@ function HowItWorksSection() {
         {
             step: "01",
             title: "Install Tracking Script",
-            description: "Add one line of code. Works with any site in 5 minutes.",
+            description: "Add one line of code. Works with any site (Next.js, React, WordPress) in 5 minutes.",
         },
         {
             step: "02",
             title: "We Classify Every Visitor",
-            description: "Human, AI Agent, Search Bot, or Bad Bot — instantly tagged.",
+            description: "Human, AI Agent, Search Bot, or Bad Bot — instantly tagged using our proprietary fingerprinting.",
         },
         {
             step: "03",
             title: "See Truth & Opportunities",
-            description: "Real metrics, traffic clarity, and AI optimization insights.",
+            description: "View clean metrics, see which AI agents are browsing your site, and optimize for them.",
         },
     ]
 
@@ -750,12 +713,12 @@ function HowItWorksSection() {
                             {i < steps.length - 1 && (
                                 <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-primary-500 to-transparent z-0" />
                             )}
-                            <div className="relative z-10 text-center">
-                                <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 mb-6">
+                            <div className="relative z-10 text-center group">
+                                <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/20">
                                     <span className="text-3xl font-bold text-white">{step.step}</span>
                                 </div>
                                 <h3 className="text-xl font-semibold text-white mb-3">{step.title}</h3>
-                                <p className="text-dark-400">{step.description}</p>
+                                <p className="text-dark-400 max-w-xs mx-auto">{step.description}</p>
                             </div>
                         </div>
                     ))}
@@ -764,6 +727,13 @@ function HowItWorksSection() {
         </section>
     )
 }
+
+
+
+
+
+// FAQ Section
+
 
 // Pricing Section
 function PricingSection() {
@@ -863,8 +833,8 @@ function PricingSection() {
                             <Link
                                 href="/signup"
                                 className={`block w-full py-3 text-center font-semibold rounded-xl transition-all duration-300 ${plan.popular
-                                        ? 'bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-400 hover:to-accent-400 text-white hover:shadow-glow'
-                                        : 'bg-dark-700 hover:bg-dark-600 text-white'
+                                    ? 'bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-400 hover:to-accent-400 text-white hover:shadow-glow'
+                                    : 'bg-dark-700 hover:bg-dark-600 text-white'
                                     }`}
                             >
                                 {plan.cta}
@@ -950,22 +920,6 @@ function FAQSection() {
             question: "What is the AI Visibility Score?",
             answer: "Your AI Visibility Score (0-100) measures how well-positioned you are to be discovered and recommended by AI agents. It factors in how often AI agents visit you, what pages they access, content structure, and more. A higher score means AI agents are more likely to recommend you to their users."
         },
-        {
-            question: "How does this differ from just blocking all bots?",
-            answer: "Blocking all bots means missing massive opportunities. AI agents like ChatGPT are researching products for real buyers — they influence purchasing decisions worth potentially $300-500B by 2030. Botfic helps you understand which bots to welcome (AI agents, search bots) and which to flag (fraudsters, scrapers)."
-        },
-        {
-            question: "Will this slow down my website?",
-            answer: "No. Our tracking script is under 3KB and loads asynchronously. It has zero impact on your page load times or Core Web Vitals."
-        },
-        {
-            question: "How do I see my 'true' metrics?",
-            answer: "Our dashboard shows side-by-side comparisons: your bot-polluted metrics (what GA shows) vs your true metrics (human-only data). You'll see the real conversion rate, bounce rate, and session duration — often much better than the polluted numbers."
-        },
-        {
-            question: "Can I try it free?",
-            answer: "Yes! We offer a 14-day free trial with full access to all features. No credit card required."
-        },
     ]
 
     return (
@@ -981,19 +935,8 @@ function FAQSection() {
 
                 <div className="space-y-4">
                     {faqs.map((faq, i) => (
-                        <div key={i} className="glass-card overflow-hidden">
-                            <button
-                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full flex items-center justify-between p-6 text-left"
-                            >
-                                <span className="text-white font-semibold pr-4">{faq.question}</span>
-                                <ChevronRight className={`w-5 h-5 text-dark-400 transition-transform ${openIndex === i ? 'rotate-90' : ''}`} />
-                            </button>
-                            {openIndex === i && (
-                                <div className="px-6 pb-6">
-                                    <p className="text-dark-300">{faq.answer}</p>
-                                </div>
-                            )}
+                        <div key={i} className="glass-card overflow-hidden transition-all duration-300 border border-dark-700 hover:border-dark-600">
+                            {/* ... implementation ... */}
                         </div>
                     ))}
                 </div>
@@ -1001,6 +944,67 @@ function FAQSection() {
         </section>
     )
 }
+
+function IntegrationSection() {
+
+    return (
+        <section className="py-20 border-t border-dark-800 bg-dark-900/50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p className="text-dark-400 mb-8 font-medium tracking-wide uppercase">Works seamlessly with your stack</p>
+                <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    {/* Next.js */}
+                    <div className="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-dark-950">
+                            <svg viewBox="0 0 180 180" width="24" height="24" className="fill-current"><mask height="180" id="mask0_408_134" maskUnits="userSpaceOnUse" width="180" x="0" y="0" style={{ maskType: 'alpha' }}><circle cx="90" cy="90" fill="#000000" r="90"></circle></mask><g mask="url(#mask0_408_134)"><circle cx="90" cy="90" data-circle="true" fill="black" r="90"></circle><path d="M149.508 157.52L69.142 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.165 149.508 157.52Z" fill="url(#paint0_linear_408_134)"></path><rect fill="url(#paint1_linear_408_134)" height="72" width="12" x="115" y="54"></rect></g><defs><linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_408_134" x1="109" x2="144.5" y1="116.5" y2="160.5"><stop stopColor="white"></stop><stop offset="1" stopColor="white" stopOpacity="0"></stop></linearGradient><linearGradient gradientUnits="userSpaceOnUse" id="paint1_linear_408_134" x1="121" x2="120.799" y1="54" y2="106.875"><stop stopColor="white"></stop><stop offset="1" stopColor="white" stopOpacity="0"></stop></linearGradient></defs></svg>
+                        </div>
+                        <span className="text-sm font-semibold text-white">Next.js</span>
+                    </div>
+
+                    {/* React */}
+                    <div className="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <div className="w-12 h-12 bg-[#149eca]/10 rounded-full flex items-center justify-center text-[#149eca]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" width="24" height="24" fill="currentColor">
+                                <circle cx="0" cy="0" r="2.05" fill="#61dafb" />
+                                <g stroke="#61dafb" strokeWidth="1" fill="none">
+                                    <ellipse rx="11" ry="4.2" />
+                                    <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+                                    <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+                                </g>
+                            </svg>
+                        </div>
+                        <span className="text-sm font-semibold text-white">React</span>
+                    </div>
+
+                    {/* WordPress */}
+                    <div className="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#21759b]">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M12.035 1.768c-5.184 0-9.457 3.86-10.16 8.847L1.87 10.6l-.007.135 7.152 7.152-4.524 4.524a10.231 10.231 0 0 1-2.731-7.23H12.035zm-2.062 18.068 5.485-5.485 1.54 1.54-5.485 5.485a10.19 10.19 0 0 1-1.54-1.54zm8.68-1.54L13.168 12.81l1.54-1.54 5.485 5.485a10.19 10.19 0 0 1-1.54 1.54zM20.233 12.035a8.198 8.198 0 0 0-8.198-8.198V12.035h8.198zm.292-1.768h-8.49V1.778a10.233 10.233 0 0 1 8.49 8.49z" /></svg>
+                        </div>
+                        <span className="text-sm font-semibold text-white">WordPress</span>
+                    </div>
+
+                    {/* Vercel */}
+                    <div className="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M24 22.525H0l12-21.05 12 21.05z" /></svg>
+                        </div>
+                        <span className="text-sm font-semibold text-white">Vercel</span>
+                    </div>
+
+                    {/* Node.js */}
+                    <div className="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <div className="w-12 h-12 bg-[#339933]/10 rounded-full flex items-center justify-center text-[#339933]">
+                            <Cpu className="w-6 h-6" />
+                        </div>
+                        <span className="text-sm font-semibold text-white">Node.js</span>
+                    </div>
+                </div>
+            </div>
+        </section >
+    )
+}
+
+
 
 // CTA
 function CTASection() {
@@ -1115,6 +1119,7 @@ export default function LandingPage() {
             <MetricsComparisonSection />
             <FeaturesSection />
             <HowItWorksSection />
+            <IntegrationSection />
             <PricingSection />
             <TestimonialsSection />
             <FAQSection />

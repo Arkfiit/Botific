@@ -18,10 +18,25 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "@botfic/shared": [
+                "./packages/shared/src"
+            ],
+            "@botfic/database": [
+                "./packages/database/src"
+            ],
+            "@botfic/detection": [
+                "./packages/detection/src"
+            ],
+            "@botfic/tracker": [
+                "./packages/tracker/src"
+            ]
+        }
     },
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "apps"
     ]
 }

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '../../utils/supabase/client'
 import { Bot, Mail, Lock, User, ArrowRight, Eye, EyeOff, CheckCircle2 } from 'lucide-react'
 
 export default function SignupPage() {
@@ -11,13 +13,43 @@ export default function SignupPage() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [error, setError] = useState<string | null>(null)
+    const { replace } = useRouter()
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        // TODO: Implement actual signup
-        setTimeout(() => {
-            window.location.href = '/dashboard'
-        }, 1000)
+        setError(null)
+
+        try {
+            const supabase = createClient()
+            const { data, error: signUpError } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: name,
+                    },
+                },
+            })
+
+            if (signUpError) {
+                setError(signUpError.message)
+                return
+            }
+
+            // Check if session exists (email confirmed or confirmation disabled)
+            if (data?.session) {
+                replace('/dashboard')
+            } else {
+                // Email confirmation required
+                setError('Please check your email to confirm your account.')
+            }
+        } catch (err) {
+            setError('An unexpected error occurred')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -41,6 +73,12 @@ export default function SignupPage() {
                 <div className="bg-dark-900/80 backdrop-blur-xl border border-dark-800 rounded-2xl p-8">
                     <h1 className="text-2xl font-bold text-white text-center mb-2">Start your free trial</h1>
                     <p className="text-dark-400 text-center mb-8">14 days free, no credit card required</p>
+
+                    {error && (
+                        <div className="mb-6 p-4 bg-danger-500/10 border border-danger-500/20 rounded-xl text-danger-400 text-sm text-center">
+                            {error}
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Name */}

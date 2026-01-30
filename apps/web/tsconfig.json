@@ -25,6 +25,18 @@
         "paths": {
             "@/*": [
                 "./src/*"
+            ],
+            "@botfic/shared": [
+                "../../packages/shared/src"
+            ],
+            "@botfic/database": [
+                "../../packages/database/src"
+            ],
+            "@botfic/detection": [
+                "../../packages/detection/src"
+            ],
+            "@botfic/tracker": [
+                "../../packages/tracker/src"
             ]
         }
     },

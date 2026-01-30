@@ -1,0 +1,5 @@
+src/classifier.ts(3,79): error TS6059: File 'C:/Users/ADMIN/Bot IQ/packages/shared/src/index.ts' is not under 'rootDir' 'C:/Users/ADMIN/Bot IQ/packages/detection/src'. 'rootDir' is expected to contain all source files.
+  The file is in the program because:
+    Imported via '@botfic/shared' from file 'C:/Users/ADMIN/Bot IQ/packages/detection/src/classifier.ts'
+    Imported via '@botfic/shared' from file 'C:/Users/ADMIN/Bot IQ/packages/detection/src/patterns.ts'
+../shared/src/index.ts(1,15): error TS6059: File 'C:/Users/ADMIN/Bot IQ/packages/shared/src/types.ts' is not under 'rootDir' 'C:/Users/ADMIN/Bot IQ/packages/detection/src'. 'rootDir' is expected to contain all source files.

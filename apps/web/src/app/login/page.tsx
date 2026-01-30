@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '../../utils/supabase/client'
 import { Bot, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -10,13 +12,32 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [error, setError] = useState<string | null>(null)
+    const { replace } = useRouter()
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        // TODO: Implement actual login
-        setTimeout(() => {
-            window.location.href = '/dashboard'
-        }, 1000)
+        setError(null)
+
+        try {
+            const supabase = createClient()
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            })
+
+            if (signInError) {
+                setError(signInError.message)
+                return
+            }
+
+            replace('/dashboard')
+        } catch (err) {
+            setError('An unexpected error occurred')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -40,6 +61,12 @@ export default function LoginPage() {
                 <div className="bg-dark-900/80 backdrop-blur-xl border border-dark-800 rounded-2xl p-8">
                     <h1 className="text-2xl font-bold text-white text-center mb-2">Welcome back</h1>
                     <p className="text-dark-400 text-center mb-8">Sign in to continue to your dashboard</p>
+
+                    {error && (
+                        <div className="mb-6 p-4 bg-danger-500/10 border border-danger-500/20 rounded-xl text-danger-400 text-sm text-center">
+                            {error}
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Email */}
