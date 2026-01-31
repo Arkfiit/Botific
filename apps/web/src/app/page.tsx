@@ -353,12 +353,12 @@ function ProblemSection() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6">
-                        <AlertTriangle className="w-4 h-4 text-warning-400" />
-                        <span className="text-sm text-gray-300">The Analytics Crisis</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-8 hover:bg-red-500/20 transition-colors cursor-default">
+                        <AlertTriangle className="w-4 h-4 text-red-500" />
+                        <span className="text-sm font-bold text-red-500 tracking-widest uppercase">The Problem</span>
                     </div>
-                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6">
-                        Your Analytics Are <span className="text-growthz-blue">Lying to You</span>
+                    <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6 tracking-tight">
+                        Your Analytics Are <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-600">Lying to You</span>
                     </h2>
                     <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
                         For the first time in a decade, bot traffic has surpassed human traffic.
@@ -444,12 +444,12 @@ function SolutionSection() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-20 animate-fade-in-up">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-success-500/10 border border-success-500/20 rounded-full mb-6">
-                        <CheckCircle2 className="w-4 h-4 text-success-400" />
-                        <span className="text-sm text-success-300">The Bot-First Analytics Platform</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-growthz-blue/10 border border-growthz-blue/20 rounded-full mb-8 hover:bg-growthz-blue/20 transition-colors cursor-default">
+                        <CheckCircle2 className="w-4 h-4 text-growthz-blue" />
+                        <span className="text-sm font-bold text-growthz-blue tracking-widest uppercase">The Solution</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                        Three Things You Need to <span className="gradient-text">Thrive in the Bot-First Era</span>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                        Three Things You Need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-growthz-blue to-cyan-400">Thrive in the Bot Era</span>
                     </h2>
                 </div>
 
@@ -552,8 +552,12 @@ function MetricsComparisonSection() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                        Your Real Numbers Are <span className="text-success-400">Better Than You Think</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-8 hover:bg-emerald-500/20 transition-colors cursor-default">
+                        <Sparkles className="w-4 h-4 text-emerald-500" />
+                        <span className="text-sm font-bold text-emerald-500 tracking-widest uppercase">The Benefit</span>
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+                        Your Real Numbers Are <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Better Than You Think</span>
                     </h2>
                     <p className="text-lg text-dark-300 max-w-2xl mx-auto">
                         When you filter out bot traffic, your true performance tells a much better story.
