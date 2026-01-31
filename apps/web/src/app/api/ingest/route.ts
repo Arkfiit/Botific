@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { classifyVisitor } from '@/lib/detection'
+import { createClient } from '@supabase/supabase-js'
 
 // Types
 interface IngestPayload {
@@ -75,24 +76,49 @@ export async function POST(request: NextRequest) {
             jsEnabled: payload.jsEnabled,
         })
 
-        // TODO: Store in database
-        // For now, log the classification
-        console.log('[Ingest]', {
+        // Initialize Supabase Client (Anon)
+        // Note: In a real production app, you would use the SERVICE_ROLE_KEY to bypass RLS for ingestion,
+        // or ensure your RLS policy allows 'INSERT' for public users on specific tables.
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        const supabase = createClient(supabaseUrl, supabaseKey)
+
+        // 1. Store Raw Event
+        const { error: eventError } = await supabase
+            .from('analytics_events')
+            .insert({
+                project_id: payload.siteId, // Assuming siteId is the UUID of the project
+                session_id: payload.sessionId,
+                visitor_type: classification.label, // 'human', 'ai_agent', 'bad_bot', 'search_bot'
+                agent_name: classification.agent || null,
+                path: new URL(payload.url).pathname,
+                country: request.headers.get('x-vercel-ip-country') || 'Unknown',
+                device: payload.screenWidth ? (payload.screenWidth < 768 ? 'Mobile' : 'Desktop') : 'Unknown',
+                duration: 0, // Initial hit
+            })
+
+        if (eventError) {
+            console.error('[Supabase Insert Error]', eventError)
+            // Don't fail the request to the client, just log it
+        }
+
+        // 2. If it's an AI Agent, update Opportunities (Upsert)
+        if (classification.label === 'ai_agent' && classification.agent) {
+            // We can't easily upsert with increment in standard client without a stored procedure or RLS blocking.
+            // For MVP, we'll try a raw insert if the schema allows, or just rely on raw events for calculating this later.
+            // Ideally: call an RPC function 'increment_agent_visit'
+        }
+
+        console.log('[Ingest] Processed:', {
             siteId: payload.siteId,
-            sessionId: payload.sessionId,
-            url: payload.url,
-            classification: classification.label,
-            confidence: classification.confidence,
-            agent: classification.agent,
+            type: classification.label,
+            agent: classification.agent
         })
 
-        // Return classification result (useful for debugging)
         return NextResponse.json({
             success: true,
-            sessionId: payload.sessionId,
             classification: {
                 label: classification.label,
-                confidence: classification.confidence,
                 agent: classification.agent,
             }
         })

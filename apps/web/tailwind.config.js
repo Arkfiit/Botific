@@ -66,10 +66,15 @@ module.exports = {
                     900: '#0f172a',
                     950: '#020617',
                 },
+                growthz: {
+                    bg: '#101827',
+                    blue: '#0163F8',
+                },
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
                 display: ['Cal Sans', 'Inter', 'system-ui', 'sans-serif'],
+                serif: ['Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
             },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-out forwards',

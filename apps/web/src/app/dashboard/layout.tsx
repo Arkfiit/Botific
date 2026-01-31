@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useParams, useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
 import {
     Bot,
     LayoutDashboard,
@@ -15,15 +16,18 @@ import {
     LogOut,
     Settings,
     Bell,
-    ChevronDown
+    ChevronDown,
+    Plus,
+    Check
 } from 'lucide-react'
 
-const navItems = [
-    { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-    { href: '/dashboard/true-metrics', label: 'True Metrics', icon: BarChart3 },
-    { href: '/dashboard/bot-traffic', label: 'Bot Traffic', icon: Activity },
-    { href: '/dashboard/ai-agents', label: 'AI Agents', icon: Cpu },
-    { href: '/dashboard/optimization', label: 'Optimization', icon: Lightbulb },
+const getNavItems = (projectId?: string) => [
+    { href: projectId ? `/dashboard/project/${projectId}` : '/dashboard', label: 'Overview', icon: LayoutDashboard },
+    // Placeholder links for future features
+    { href: projectId ? `/dashboard/project/${projectId}#metrics` : '#', label: 'True Metrics', icon: BarChart3 },
+    { href: projectId ? `/dashboard/project/${projectId}#bot-traffic` : '#', label: 'Bot Traffic', icon: Activity },
+    { href: projectId ? `/dashboard/project/${projectId}#ai-agents` : '#', label: 'AI Agents', icon: Cpu },
+    { href: projectId ? `/dashboard/project/${projectId}#optimization` : '#', label: 'Optimization', icon: Lightbulb },
 ]
 
 export default function DashboardLayout({
@@ -32,8 +36,38 @@ export default function DashboardLayout({
     children: React.ReactNode
 }) {
     const pathname = usePathname()
+    const params = useParams()
+    const projectId = params.id as string | undefined
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [userMenuOpen, setUserMenuOpen] = useState(false)
+    const [projectMenuOpen, setProjectMenuOpen] = useState(false)
+    const [projects, setProjects] = useState<any[]>([])
+    const supabase = createClient()
+    const router = useRouter()
+
+    useEffect(() => {
+        async function loadProjects() {
+            try {
+                // Get current user first to be safe, though RLS handles it
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) return
+
+                const { data } = await supabase
+                    .from('projects')
+                    .select('id, name')
+                    .order('created_at', { ascending: false })
+
+                if (data) setProjects(data)
+            } catch (e) {
+                console.error('Error loading projects list:', e)
+            }
+        }
+        loadProjects()
+    }, [supabase])
+
+    const activeProject = projects.find(p => p.id === projectId)
+
+    const navItems = getNavItems(projectId)
 
     return (
         <div className="min-h-screen bg-dark-950">
@@ -120,10 +154,52 @@ export default function DashboardLayout({
                         </button>
 
                         {/* Site selector */}
-                        <div className="hidden lg:flex items-center gap-2 px-3 py-2 bg-dark-800 rounded-xl cursor-pointer hover:bg-dark-700 transition-colors">
-                            <div className="w-2 h-2 rounded-full bg-success-500" />
-                            <span className="text-white font-medium">mywebsite.com</span>
-                            <ChevronDown className="w-4 h-4 text-dark-400" />
+                        {/* Site selector dropdown */}
+                        <div className="hidden lg:relative lg:block">
+                            <button
+                                onClick={() => setProjectMenuOpen(!projectMenuOpen)}
+                                className="flex items-center gap-2 px-3 py-2 bg-dark-800 rounded-xl cursor-pointer hover:bg-dark-700 transition-colors border border-transparent hover:border-dark-600"
+                            >
+                                <div className={`w-2 h-2 rounded-full ${projectId ? 'bg-success-500' : 'bg-dark-500'}`} />
+                                <span className="text-white font-medium truncate max-w-[150px]">
+                                    {activeProject ? activeProject.name : (projectId ? 'Project Loading...' : 'Select Project')}
+                                </span>
+                                <ChevronDown className="w-4 h-4 text-dark-400" />
+                            </button>
+
+                            {projectMenuOpen && (
+                                <>
+                                    <div className="fixed inset-0 z-40" onClick={() => setProjectMenuOpen(false)} />
+                                    <div className="absolute left-0 top-full mt-2 w-64 bg-dark-800 border border-dark-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                                        <div className="p-2 text-xs font-semibold text-dark-400 uppercase tracking-wider px-3 py-2">
+                                            Switch Project
+                                        </div>
+                                        <div className="max-h-64 overflow-y-auto">
+                                            {projects.map(p => (
+                                                <Link
+                                                    key={p.id}
+                                                    href={`/dashboard/project/${p.id}`}
+                                                    onClick={() => setProjectMenuOpen(false)}
+                                                    className={`flex items-center justify-between px-3 py-2.5 mx-2 rounded-lg transition-colors ${projectId === p.id ? 'bg-primary-500/10 text-primary-400' : 'text-gray-300 hover:bg-dark-700 hover:text-white'}`}
+                                                >
+                                                    <span className="truncate">{p.name}</span>
+                                                    {projectId === p.id && <Check className="w-4 h-4" />}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                        <div className="p-2 border-t border-dark-700 mt-1">
+                                            <Link
+                                                href="/dashboard"
+                                                onClick={() => setProjectMenuOpen(false)}
+                                                className="flex items-center gap-2 px-3 py-2 text-primary-400 hover:bg-primary-500/10 rounded-lg transition-colors text-sm font-medium"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                                Create New Project
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         {/* Right side */}

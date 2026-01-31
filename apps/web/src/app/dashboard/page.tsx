@@ -1,295 +1,180 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
-    Users,
-    Bot,
-    Search,
-    AlertTriangle,
-    TrendingUp,
-    TrendingDown,
-    ArrowUpRight,
-    Activity,
-    Eye
+    Plus,
+    Globe,
+    ArrowRight,
+    Loader2,
+    Shield,
+    Activity
 } from 'lucide-react'
 
-// Mock data for the dashboard
-const overviewStats = {
-    totalVisits: 10234,
-    humanTraffic: 42,
-    aiAgentTraffic: 28,
-    searchBotTraffic: 18,
-    badBotTraffic: 12,
-    aiVisibilityScore: 78,
-    trueConversionRate: 3.8,
-    pollutedConversionRate: 1.4,
-}
+export default function DashboardHome() {
+    const [projects, setProjects] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+    const [creating, setCreating] = useState(false)
+    const [newProjectUrl, setNewProjectUrl] = useState('')
+    const [error, setError] = useState<string | null>(null)
 
-const recentActivity = [
-    { time: '2 min ago', type: 'ai', agent: 'ChatGPT', page: '/pricing', action: 'Page view' },
-    { time: '5 min ago', type: 'human', agent: null, page: '/features', action: 'Conversion' },
-    { time: '8 min ago', type: 'search', agent: 'Googlebot', page: '/blog/how-to', action: 'Crawl' },
-    { time: '12 min ago', type: 'ai', agent: 'Perplexity', page: '/docs', action: 'Page view' },
-    { time: '15 min ago', type: 'bad', agent: 'Unknown Scraper', page: '/api/*', action: 'Blocked' },
-]
+    const supabase = createClient()
+    const router = useRouter()
 
-const topAIAgents = [
-    { name: 'ChatGPT', visits: 1234, trend: '+23%', pages: ['/pricing', '/features'] },
-    { name: 'Perplexity', visits: 856, trend: '+67%', pages: ['/blog', '/docs'] },
-    { name: 'Claude', visits: 432, trend: '+12%', pages: ['/api-docs', '/integrations'] },
-    { name: 'Gemini', visits: 325, trend: '+89%', pages: ['/pricing', '/about'] },
-]
+    useEffect(() => {
+        async function loadProjects() {
+            try {
+                // Get current user first
+                const { data: { user } } = await supabase.auth.getUser()
 
-export default function DashboardOverview() {
+                if (!user) {
+                    // Redirect to login if not authenticated (should be handled by middleware essentially)
+                    return
+                }
+
+                const { data, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+
+                if (error) throw error
+                setProjects(data || [])
+            } catch (err: any) {
+                console.error('Error loading projects:', err)
+                // For MVP, if we fail (e.g., auth issue), we might just show empty state or mock it
+            } finally {
+                setLoading(false)
+            }
+        }
+        loadProjects()
+    }, [supabase])
+
+    const handleCreateProject = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!newProjectUrl) return
+
+        setCreating(true)
+        setError(null)
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser()
+
+            if (!user) {
+                // For demo/dev mode without real auth, we can't create real RLS protected rows.
+                // But let's assume the user is signed in or the detailed prompt allowed for this.
+                // If not, we'll error out.
+                setError('You must be logged in to create a project.')
+                return
+            }
+
+            // Extract generic name from URL
+            let name = newProjectUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0]
+
+            const { data, error } = await supabase
+                .from('projects')
+                .insert({
+                    name: name,
+                    domain: newProjectUrl,
+                    user_id: user.id
+                })
+                .select()
+                .single()
+
+            if (error) throw error
+
+            // Redirect to the new project dashboard
+            router.push(`/dashboard/project/${data.id}`)
+
+        } catch (err: any) {
+            console.error('Error creating project:', err)
+            setError(err.message || 'Failed to create project')
+        } finally {
+            setCreating(false)
+        }
+    }
+
+    if (loading) {
+        return (
+            <div className="flex h-[50vh] items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
+            </div>
+        )
+    }
+
     return (
-        <div className="space-y-6">
-            {/* Page header */}
+        <div className="max-w-5xl mx-auto space-y-12 animate-fade-in">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Overview</h1>
-                    <p className="text-dark-400">Your traffic at a glance</p>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 bg-dark-800 rounded-xl text-dark-300 text-sm">
-                    <Activity className="w-4 h-4" />
-                    <span>Last 7 days</span>
+                    <h1 className="text-3xl font-bold text-white mb-2">My Projects</h1>
+                    <p className="text-dark-400">Manage your websites and tracking.</p>
                 </div>
             </div>
 
-            {/* Main stats grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard
-                    label="Total Visits"
-                    value={overviewStats.totalVisits.toLocaleString()}
-                    icon={<Eye className="w-5 h-5" />}
-                    trend="+12%"
-                    trendUp={true}
-                    color="primary"
-                />
-                <StatCard
-                    label="Human Traffic"
-                    value={`${overviewStats.humanTraffic}%`}
-                    icon={<Users className="w-5 h-5" />}
-                    subtext={`${Math.round(overviewStats.totalVisits * overviewStats.humanTraffic / 100).toLocaleString()} visits`}
-                    color="success"
-                />
-                <StatCard
-                    label="AI Agent Traffic"
-                    value={`${overviewStats.aiAgentTraffic}%`}
-                    icon={<Bot className="w-5 h-5" />}
-                    trend="+45%"
-                    trendUp={true}
-                    subtext={`${Math.round(overviewStats.totalVisits * overviewStats.aiAgentTraffic / 100).toLocaleString()} visits`}
-                    color="accent"
-                />
-                <StatCard
-                    label="Bad Bot Traffic"
-                    value={`${overviewStats.badBotTraffic}%`}
-                    icon={<AlertTriangle className="w-5 h-5" />}
-                    trend="-8%"
-                    trendUp={false}
-                    subtext="Identified & filtered"
-                    color="danger"
-                />
-            </div>
-
-            {/* Second row - Key insights */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                {/* AI Visibility Score */}
-                <div className="bg-dark-800/50 border border-primary-500/30 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-dark-400 font-medium">AI Visibility Score</h3>
-                        <span className="text-xs text-success-400 bg-success-500/10 px-2 py-1 rounded-full">+12 this week</span>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-bold text-white">{overviewStats.aiVisibilityScore}</span>
-                        <span className="text-2xl text-primary-400">/100</span>
-                    </div>
-                    <div className="mt-4 h-3 bg-dark-700 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-500"
-                            style={{ width: `${overviewStats.aiVisibilityScore}%` }}
+            {/* Create Project Form */}
+            <div className="bg-dark-900 border border-dark-800 rounded-2xl p-8 shadow-xl">
+                <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-primary-400" />
+                    Add a new website
+                </h2>
+                <form onSubmit={handleCreateProject} className="flex gap-4 items-start">
+                    <div className="flex-1">
+                        <input
+                            type="text"
+                            placeholder="example.com"
+                            className="w-full px-4 py-3 bg-dark-950 border border-dark-700 rounded-xl text-white focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 outline-none transition-all placeholder:text-dark-600"
+                            value={newProjectUrl}
+                            onChange={(e) => setNewProjectUrl(e.target.value)}
+                            required
                         />
+                        {error && <p className="mt-2 text-danger-400 text-sm">{error}</p>}
                     </div>
-                    <p className="mt-3 text-dark-400 text-sm">
-                        Your site is well-positioned for AI agent discovery
-                    </p>
-                </div>
-
-                {/* True Metrics Highlight */}
-                <div className="bg-dark-800/50 border border-success-500/30 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-dark-400 font-medium">True Conversion Rate</h3>
-                        <span className="text-xs text-success-400">Humans only</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div>
-                            <div className="text-dark-500 text-sm line-through">{overviewStats.pollutedConversionRate}%</div>
-                            <div className="text-4xl font-bold text-success-400">{overviewStats.trueConversionRate}%</div>
-                        </div>
-                        <div className="flex-1">
-                            <div className="text-success-400 text-lg font-semibold flex items-center gap-1">
-                                <TrendingUp className="w-5 h-5" />
-                                +171%
-                            </div>
-                            <div className="text-dark-400 text-sm">vs polluted rate</div>
-                        </div>
-                    </div>
-                    <p className="mt-4 text-dark-400 text-sm">
-                        Your real conversion rate is <span className="text-success-400 font-medium">2.7x better</span> than GA shows
-                    </p>
-                </div>
-
-                {/* Traffic Distribution */}
-                <div className="bg-dark-800/50 border border-dark-700 rounded-2xl p-6">
-                    <h3 className="text-dark-400 font-medium mb-4">Traffic Distribution</h3>
-                    <div className="space-y-3">
-                        <TrafficBar label="Human" pct={overviewStats.humanTraffic} color="success" icon="👤" />
-                        <TrafficBar label="AI Agent" pct={overviewStats.aiAgentTraffic} color="primary" icon="🤖" />
-                        <TrafficBar label="Search Bot" pct={overviewStats.searchBotTraffic} color="accent" icon="🔍" />
-                        <TrafficBar label="Bad Bot" pct={overviewStats.badBotTraffic} color="danger" icon="⚠️" />
-                    </div>
-                </div>
+                    <button
+                        type="submit"
+                        disabled={creating || !newProjectUrl}
+                        className="px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                        {creating ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create Project'}
+                    </button>
+                </form>
             </div>
 
-            {/* Third row - Tables */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Top AI Agents */}
-                <div className="bg-dark-800/50 border border-dark-700 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-semibold">Top AI Agents</h3>
-                        <a href="/dashboard/ai-agents" className="text-primary-400 text-sm hover:text-primary-300 flex items-center gap-1">
-                            View all <ArrowUpRight className="w-4 h-4" />
-                        </a>
+            {/* Projects Grid */}
+            <div>
+                <h2 className="text-lg font-medium text-dark-300 mb-4">Active Projects ({projects.length})</h2>
+                {projects.length === 0 ? (
+                    <div className="text-center py-12 border border-dashed border-dark-800 rounded-2xl bg-dark-900/50">
+                        <Globe className="w-12 h-12 text-dark-600 mx-auto mb-4" />
+                        <h3 className="text-dark-400 font-medium">No projects yet</h3>
+                        <p className="text-dark-500 text-sm mt-1">Add your website above to start tracking.</p>
                     </div>
-                    <div className="space-y-3">
-                        {topAIAgents.map((agent, i) => (
-                            <div key={i} className="flex items-center justify-between p-3 bg-dark-800 rounded-xl">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-primary-500/20 flex items-center justify-center">
-                                        <Bot className="w-5 h-5 text-primary-400" />
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {projects.map((project) => (
+                            <Link
+                                key={project.id}
+                                href={`/dashboard/project/${project.id}`}
+                                className="group block bg-dark-900 border border-dark-800 hover:border-primary-500/50 rounded-2xl p-6 transition-all hover:shadow-2xl hover:-translate-y-1"
+                            >
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="w-10 h-10 rounded-xl bg-dark-800 flex items-center justify-center group-hover:bg-primary-500/10 transition-colors">
+                                        <Shield className="w-5 h-5 text-dark-400 group-hover:text-primary-400 transition-colors" />
                                     </div>
-                                    <div>
-                                        <div className="text-white font-medium">{agent.name}</div>
-                                        <div className="text-dark-400 text-sm">{agent.visits.toLocaleString()} visits</div>
-                                    </div>
+                                    <ArrowRight className="w-5 h-5 text-dark-600 group-hover:text-primary-400 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
                                 </div>
-                                <div className="text-right">
-                                    <div className="text-success-400 text-sm font-medium">{agent.trend}</div>
-                                    <div className="text-dark-500 text-xs">{agent.pages[0]}</div>
+                                <h3 className="text-lg font-bold text-white mb-1 group-hover:text-primary-400 transition-colors">{project.name}</h3>
+                                <div className="text-dark-400 text-sm mb-4 truncate">{project.domain}</div>
+
+                                <div className="flex items-center gap-2 text-xs text-success-400 bg-success-500/10 px-2 py-1 rounded w-fit">
+                                    <Activity className="w-3 h-3" />
+                                    Active
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
-                </div>
-
-                {/* Recent Activity */}
-                <div className="bg-dark-800/50 border border-dark-700 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-semibold">Recent Activity</h3>
-                        <span className="text-dark-400 text-sm">Live feed</span>
-                    </div>
-                    <div className="space-y-3">
-                        {recentActivity.map((activity, i) => (
-                            <div key={i} className="flex items-center gap-3 p-3 bg-dark-800 rounded-xl">
-                                <ActivityIcon type={activity.type} />
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-white font-medium truncate">
-                                            {activity.agent || 'Human visitor'}
-                                        </span>
-                                        <span className="text-dark-500 text-xs">{activity.time}</span>
-                                    </div>
-                                    <div className="text-dark-400 text-sm truncate">
-                                        {activity.action} • {activity.page}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                )}
             </div>
-        </div>
-    )
-}
-
-function StatCard({
-    label,
-    value,
-    icon,
-    trend,
-    trendUp,
-    subtext,
-    color
-}: {
-    label: string
-    value: string
-    icon: React.ReactNode
-    trend?: string
-    trendUp?: boolean
-    subtext?: string
-    color: 'primary' | 'success' | 'accent' | 'danger'
-}) {
-    const colors = {
-        primary: 'from-primary-500/20 to-primary-500/5 border-primary-500/30 text-primary-400',
-        success: 'from-success-500/20 to-success-500/5 border-success-500/30 text-success-400',
-        accent: 'from-accent-500/20 to-accent-500/5 border-accent-500/30 text-accent-400',
-        danger: 'from-danger-500/20 to-danger-500/5 border-danger-500/30 text-danger-400',
-    }
-
-    return (
-        <div className={`bg-gradient-to-br ${colors[color]} border rounded-2xl p-5`}>
-            <div className="flex items-center justify-between mb-3">
-                <span className="text-dark-400 text-sm font-medium">{label}</span>
-                <div className={`w-10 h-10 rounded-xl bg-dark-800/50 flex items-center justify-center ${colors[color].split(' ').pop()}`}>
-                    {icon}
-                </div>
-            </div>
-            <div className="text-3xl font-bold text-white mb-1">{value}</div>
-            {trend && (
-                <div className={`flex items-center gap-1 text-sm ${trendUp ? 'text-success-400' : 'text-danger-400'}`}>
-                    {trendUp ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                    {trend}
-                </div>
-            )}
-            {subtext && <div className="text-dark-400 text-sm">{subtext}</div>}
-        </div>
-    )
-}
-
-function TrafficBar({ label, pct, color, icon }: { label: string; pct: number; color: string; icon: string }) {
-    const colors = {
-        success: 'bg-success-500',
-        primary: 'bg-primary-500',
-        accent: 'bg-accent-500',
-        danger: 'bg-danger-500',
-    }
-    return (
-        <div>
-            <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-dark-300">{icon} {label}</span>
-                <span className="text-white font-medium">{pct}%</span>
-            </div>
-            <div className="h-2 bg-dark-700 rounded-full overflow-hidden">
-                <div
-                    className={`h-full ${colors[color as keyof typeof colors]} rounded-full transition-all duration-500`}
-                    style={{ width: `${pct}%` }}
-                />
-            </div>
-        </div>
-    )
-}
-
-function ActivityIcon({ type }: { type: string }) {
-    const configs = {
-        human: { icon: <Users className="w-4 h-4" />, bg: 'bg-success-500/20', color: 'text-success-400' },
-        ai: { icon: <Bot className="w-4 h-4" />, bg: 'bg-primary-500/20', color: 'text-primary-400' },
-        search: { icon: <Search className="w-4 h-4" />, bg: 'bg-accent-500/20', color: 'text-accent-400' },
-        bad: { icon: <AlertTriangle className="w-4 h-4" />, bg: 'bg-danger-500/20', color: 'text-danger-400' },
-    }
-    const config = configs[type as keyof typeof configs] || configs.human
-
-    return (
-        <div className={`w-10 h-10 rounded-xl ${config.bg} flex items-center justify-center ${config.color}`}>
-            {config.icon}
         </div>
     )
 }

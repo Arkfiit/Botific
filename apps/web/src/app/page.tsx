@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Script from 'next/script'
 import {
     Bot,
     BarChart3,
@@ -37,6 +38,7 @@ import {
 } from 'lucide-react'
 
 // Navbar Component
+// Navbar Component
 function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
@@ -48,34 +50,40 @@ function Navbar() {
     }, [])
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-dark-950/80 backdrop-blur-xl border-b border-dark-800' : 'bg-transparent'
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-growthz-bg/80 backdrop-blur-xl border-b border-dark-800' : 'bg-transparent'
             }`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-growthz-blue flex items-center justify-center shadow-lg shadow-growthz-blue/20">
                             <Bot className="w-6 h-6 text-white" />
                         </div>
-                        <span className="text-xl font-bold text-white">Botfic</span>
+                        <span className="text-xl font-bold text-white tracking-tight">Botfic</span>
                     </Link>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-8">
-                        <Link href="#problem" className="text-dark-300 hover:text-white transition-colors">The Problem</Link>
-                        <Link href="#solution" className="text-dark-300 hover:text-white transition-colors">Solution</Link>
-                        <Link href="#pricing" className="text-dark-300 hover:text-white transition-colors">Pricing</Link>
-                        <Link href="#faq" className="text-dark-300 hover:text-white transition-colors">FAQ</Link>
+                        {['Problem', 'Solution', 'Pricing', 'FAQ'].map((item) => (
+                            <Link
+                                key={item}
+                                href={`#${item.toLowerCase()}`}
+                                className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group"
+                            >
+                                {item}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-growthz-blue transition-all duration-300 group-hover:w-full" />
+                            </Link>
+                        ))}
                     </div>
 
                     {/* CTA Buttons */}
                     <div className="hidden md:flex items-center gap-4">
-                        <Link href="/login" className="text-dark-300 hover:text-white transition-colors">
+                        <Link href="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                             Log in
                         </Link>
                         <Link
                             href="/signup"
-                            className="px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow"
+                            className="px-5 py-2.5 bg-white text-growthz-bg font-bold text-sm rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg shadow-white/10"
                         >
                             Start Free Trial
                         </Link>
@@ -84,7 +92,7 @@ function Navbar() {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
-                        className="md:hidden p-2 text-dark-300 hover:text-white"
+                        className="md:hidden p-2 text-gray-300 hover:text-white"
                     >
                         {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
@@ -93,15 +101,14 @@ function Navbar() {
 
             {/* Mobile Menu */}
             {mobileOpen && (
-                <div className="md:hidden bg-dark-900/95 backdrop-blur-xl border-b border-dark-800">
+                <div className="md:hidden bg-growthz-bg/95 backdrop-blur-xl border-b border-dark-800">
                     <div className="px-4 py-6 space-y-4">
-                        <Link href="#problem" className="block text-dark-300 hover:text-white py-2">The Problem</Link>
-                        <Link href="#solution" className="block text-dark-300 hover:text-white py-2">Solution</Link>
-                        <Link href="#pricing" className="block text-dark-300 hover:text-white py-2">Pricing</Link>
-                        <Link href="#faq" className="block text-dark-300 hover:text-white py-2">FAQ</Link>
+                        {['Problem', 'Solution', 'Pricing', 'FAQ'].map((item) => (
+                            <Link key={item} href={`#${item.toLowerCase()}`} className="block text-gray-300 hover:text-white py-2 font-medium">{item}</Link>
+                        ))}
                         <div className="pt-4 border-t border-dark-700 space-y-3">
-                            <Link href="/login" className="block text-center text-dark-300 hover:text-white py-2">Log in</Link>
-                            <Link href="/signup" className="block text-center px-5 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl">
+                            <Link href="/login" className="block text-center text-gray-300 hover:text-white py-2">Log in</Link>
+                            <Link href="/signup" className="block text-center px-5 py-3 bg-growthz-blue text-white font-bold rounded-xl shadow-lg shadow-growthz-blue/20">
                                 Start Free Trial
                             </Link>
                         </div>
@@ -112,163 +119,169 @@ function Navbar() {
     )
 }
 
-// Hero Section - THE COMPLETE PICTURE
+// Hero Section - Growthz.ai Inspired
 function HeroSection() {
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-            {/* Background Image & Effects */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-dark-950/80 z-10" />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent z-10" />
-                <img
-                    src="/images/hero-bg.png"
-                    alt="Data Visualization"
-                    className="w-full h-full object-cover opacity-60"
-                />
-            </div>
+        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+            {/* Background - Radial Gradient from bottom left */}
+            <div className="absolute inset-0 z-0 bg-growthz-bg" style={{
+                background: 'radial-gradient(circle at bottom left, #0163F8 0%, #101827 40%)'
+            }} />
 
-            {/* Spotlight Effect */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-primary-500/20 blur-[120px] rounded-full z-0 opacity-50" />
+            {/* Overlay for readability if needed */}
+            <div className="absolute inset-0 bg-dark-950/20 z-0" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-                <div className="text-center max-w-5xl mx-auto">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-dark-800/80 backdrop-blur-md border border-dark-600 rounded-full mb-8 animate-fade-in shadow-lg shadow-primary-500/10">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-success-500"></span>
-                        </span>
-                        <span className="text-sm text-dark-200">New: Agentic Commerce Tracking Live</span>
-                    </div>
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
 
-                    {/* Main Headline */}
-                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 animate-fade-in-up tracking-tight">
-                        <span className="text-white drop-shadow-xl">Analytics for the </span>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-white to-accent-300 animate-gradient-x">Agentic Web.</span>
-                    </h1>
-
-                    {/* Subheadline - THE COMPLETE PICTURE */}
-                    <p className="text-xl md:text-2xl text-dark-200 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-200 leading-relaxed font-light">
-                        The first analytics platform built to decode <span className="text-white font-medium">AI Agent</span> traffic.
-                        Isolate human users, measure true conversion, and <span className="text-primary-300 font-medium">optimize your site for the bots that buy</span>.
-                    </p>
-
-                    {/* Subheadline - THE COMPLETE PICTURE */}
-                    <p className="text-xl md:text-2xl text-dark-200 max-w-3xl mx-auto mb-10 animate-fade-in-up animation-delay-200 leading-relaxed font-light">
-                        Filter out the <span className="text-white font-medium">50%+ of bot traffic</span> polluting your analytics.
-                        Unlock <span className="text-primary-300 font-medium">true conversion rates</span> and discover the AI agents already researching your product.
-                    </p>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up animation-delay-400">
-                        <Link
-                            href="/signup"
-                            className="group relative px-8 py-4 bg-white text-dark-950 font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"
-                        >
-                            <span className="relative z-10">Start 14-Day Free Trial</span>
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
-                        </Link>
-                        <Link
-                            href="#demo"
-                            className="group px-8 py-4 bg-dark-800/40 backdrop-blur-md hover:bg-dark-700/40 border border-dark-600 hover:border-dark-500 text-white font-semibold text-lg rounded-full transition-all duration-300 flex items-center justify-center gap-2"
-                        >
-                            <Play className="w-5 h-5 fill-current" />
-                            Watch Demo
-                        </Link>
-                    </div>
-
-                    {/* Hero Dashboard - 3D Perspective */}
-                    <div className="relative mt-8 animate-fade-in-up animation-delay-600 perspective-1000 group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-                        <div className="relative bg-dark-900/90 backdrop-blur-xl border border-dark-700/50 rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-700 hover:rotate-x-2">
-                            {/* Browser chrome */}
-                            <div className="flex items-center gap-2 px-4 py-3 border-b border-dark-700/50 bg-dark-800/50">
-                                <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-danger-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-warning-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-success-500/80" />
-                                </div>
-                                <div className="flex-1 flex justify-center">
-                                    <div className="px-4 py-1 bg-dark-900/50 rounded-lg text-xs text-dark-400 font-mono">
-                                        app.botfic.com/dashboard/overview
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Dashboard Content */}
-                            <div className="p-6 md:p-8">
-                                <div className="grid md:grid-cols-3 gap-6">
-                                    {/* Column 1: Real Metrics */}
-                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-success-500/20 hover:border-success-500/40 transition-colors">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-success-500/20 to-success-900/20 flex items-center justify-center">
-                                                <BarChart3 className="w-5 h-5 text-success-400" />
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-dark-400 font-medium">TRUE METRICS</div>
-                                                <div className="text-white font-semibold">Human Only</div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-4">
-                                            <MetricCompare label="Conversion" polluted="1.4%" real="3.8%" />
-                                            <MetricCompare label="Bounce" polluted="72%" real="45%" />
-                                            <div className="pt-2 border-t border-dark-700/50">
-                                                <div className="flex justify-between text-xs">
-                                                    <span className="text-dark-400">Revenue Impact</span>
-                                                    <span className="text-success-400 font-mono font-bold">+$12,450/mo</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Column 2: Traffic Breakdown */}
-                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-primary-500/20 hover:border-primary-500/40 transition-colors">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-primary-900/20 flex items-center justify-center">
-                                                <PieChart className="w-5 h-5 text-primary-400" />
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-dark-400 font-medium">TRAFFIC SOURCE</div>
-                                                <div className="text-white font-semibold">Live Feed</div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <TrafficBar label="Human Users" pct={42} color="success" icon="👤" />
-                                            <TrafficBar label="AI Agents" pct={28} color="primary" icon="🤖" />
-                                            <TrafficBar label="Search Bots" pct={18} color="accent" icon="🔍" />
-                                        </div>
-                                    </div>
-
-                                    {/* Column 3: Opportunities */}
-                                    <div className="bg-dark-800/30 rounded-xl p-5 border border-accent-500/20 hover:border-accent-500/40 transition-colors">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-500/20 to-accent-900/20 flex items-center justify-center">
-                                                <Rocket className="w-5 h-5 text-accent-400" />
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-dark-400 font-medium">AI OPPORTUNITIES</div>
-                                                <div className="text-white font-semibold">Agent Activity</div>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <OpportunityItem agent="ChatGPT-User" visits="1,234" trend="+45%" />
-                                            <OpportunityItem agent="PerplexityBot" visits="856" trend="+67%" />
-                                            <div className="mt-2 p-2.5 bg-accent-500/10 rounded-lg border border-accent-500/10">
-                                                <div className="flex justify-between items-center">
-                                                    <span className="text-xs text-accent-300">Visibility Score</span>
-                                                    <span className="text-lg font-bold text-white">78<span className="text-xs text-dark-400 font-normal">/100</span></span>
-                                                </div>
-                                                <div className="w-full h-1.5 bg-dark-700 rounded-full mt-1">
-                                                    <div className="h-full w-[78%] bg-accent-500 rounded-full"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                {/* Logo/Icon if they have one central */}
+                <div className="flex justify-center mb-12">
+                    <div className="relative w-28 h-28">
+                        <div className="absolute inset-0 bg-growthz-blue/40 blur-2xl rounded-full animate-pulse-glow" />
+                        <div className="relative w-full h-full bg-gradient-to-br from-growthz-blue to-accent-400 rounded-2xl flex items-center justify-center shadow-2xl rotate-12 hover:rotate-0 transition-all duration-500">
+                            <Bot className="w-16 h-16 text-white" />
                         </div>
                     </div>
                 </div>
+
+                {/* Main Headline - Serif */}
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-8 leading-tight max-w-5xl mx-auto drop-shadow-2xl animate-fade-in-up tracking-tight">
+                    Analytics Built for the <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-growthz-blue via-blue-400 to-white">Agentic Economy</span>
+                </h1>
+
+                {/* Subheadline Expanded */}
+                <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed font-light animate-fade-in-up animation-delay-200">
+                    Traditional analytics are broken. <strong className="text-white font-medium">Over 50% of your traffic is now non-human.</strong> <br className="hidden md:block" />
+                    Botfic is the first intelligence platform designed to decode this new world: <br className="hidden md:block" />
+                    <span className="text-growthz-blue font-medium">isolate human buyers</span>, <span className="text-growthz-blue font-medium">track AI agent visits</span>, and <span className="text-growthz-blue font-medium">unlock your true conversion metrics</span>.
+                </p>
+
+                {/* CTA Button */}
+                <div className="flex justify-center animate-fade-in-up animation-delay-400">
+                    <Link
+                        href="/signup"
+                        className="relative group transition-all duration-300 hover:scale-105"
+                    >
+                        <div className="absolute -inset-1 bg-gradient-to-r from-growthz-blue to-accent-400 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-200" />
+                        <button className="relative px-8 py-4 bg-dark-900 border border-growthz-blue/30 hover:bg-growthz-blue hover:border-growthz-blue text-white font-bold text-lg rounded-full transition-all duration-300 shadow-xl flex items-center gap-3">
+                            <Sparkles className="w-5 h-5" />
+                            Start Free Trial
+                        </button>
+                    </Link>
+                </div>
+
+                {/* Visual/Dashboard Preview */}
+                {/* Visual/Dashboard Preview */}
+                <div className="mt-20 relative animate-fade-in-up animation-delay-600 perspective-1000 group">
+                    {/* Glow Effects */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-growthz-blue via-blue-500 to-growthz-blue rounded-xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
+
+                    {/* Dashboard Container */}
+                    <div className="relative bg-[#0B1221] border border-white/10 rounded-xl overflow-hidden shadow-2xl transform rotate-x-12 group-hover:rotate-x-0 transition-transform duration-700 ease-out">
+
+                        {/* Window Header */}
+                        <div className="flex items-center gap-4 px-6 py-4 border-b border-white/5 bg-[#0F172A]">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+                                <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+                                <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+                            </div>
+                            <div className="flex-1 flex justify-center">
+                                <div className="px-4 py-1.5 bg-black/20 rounded-md border border-white/5 text-[10px] text-gray-400 font-mono flex items-center gap-2">
+                                    <Shield className="w-3 h-3" />
+                                    app.botfic.com/dashboard
+                                </div>
+                            </div>
+                            <div className="w-16" /> {/* Spacer for centering */}
+                        </div>
+
+                        {/* Dashboard Body */}
+                        <div className="p-8 grid md:grid-cols-3 gap-6 text-left">
+
+                            {/* Card 1: Bot Purification */}
+                            <div className="bg-[#131B2D] rounded-xl p-5 border border-white/5 relative overflow-hidden group/card hover:border-growthz-blue/30 transition-colors">
+                                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                                <div className="flex items-center justify-between mb-6">
+                                    <div>
+                                        <div className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Total Sessions</div>
+                                        <div className="text-2xl font-bold text-white">24,592</div>
+                                    </div>
+                                    <div className="w-10 h-10 rounded-lg bg-growthz-blue/10 flex items-center justify-center border border-growthz-blue/20">
+                                        <Activity className="w-5 h-5 text-growthz-blue" />
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-gray-400">Bot Traffic</span>
+                                        <span className="text-red-400 font-mono">13,201 (53%)</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-dark-800 rounded-full overflow-hidden">
+                                        <div className="h-full bg-red-500 w-[53%] rounded-full relative">
+                                            <div className="absolute inset-0 bg-white/20 animate-shimmer" />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-gray-400">Real Humans</span>
+                                        <span className="text-emerald-400 font-mono">11,391 (47%)</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-dark-800 rounded-full overflow-hidden">
+                                        <div className="h-full bg-emerald-500 w-[47%] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Card 2: Metrics Recovery */}
+                            <div className="bg-[#131B2D] rounded-xl p-5 border border-white/5 relative overflow-hidden group/card hover:border-emerald-500/30 transition-colors">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                                        <BarChart3 className="w-5 h-5 text-emerald-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-white font-medium">True Metrics</div>
+                                        <div className="text-xs text-gray-500">Filtered View</div>
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <MetricCompare label="Conversion" polluted="1.2%" real="3.8%" />
+                                    <MetricCompare label="Bounce Rate" polluted="82%" real="45%" />
+                                    <MetricCompare label="Avg. Session" polluted="24s" real="3m 12s" />
+                                </div>
+                                <div className="mt-4 pt-3 border-t border-white/5">
+                                    <div className="flex items-center gap-2 text-xs text-emerald-400">
+                                        <TrendingUp className="w-3 h-3" />
+                                        <span>Data Confidence: 99.8%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Card 3: AI Opportunities */}
+                            <div className="bg-[#131B2D] rounded-xl p-5 border border-white/5 relative overflow-hidden group/card hover:border-purple-500/30 transition-colors">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                        <Sparkles className="w-5 h-5 text-purple-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-white font-medium">Agent Activity</div>
+                                        <div className="text-xs text-gray-500">Last 24h</div>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <OpportunityItem agent="ChatGPT (User)" visits="842" trend="+12%" icon={<Bot className="w-3 h-3" />} />
+                                    <OpportunityItem agent="Perplexity" visits="315" trend="+45%" icon={<Search className="w-3 h-3" />} />
+                                    <OpportunityItem agent="ClaudeBot" visits="159" trend="+8%" icon={<Cpu className="w-3 h-3" />} />
+                                </div>
+                                <div className="mt-4 p-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded border border-purple-500/10">
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-purple-300">Visibility Score</span>
+                                        <span className="text-white font-bold">88/100</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
     )
@@ -276,117 +289,123 @@ function HeroSection() {
 
 function MetricCompare({ label, polluted, real }: { label: string; polluted: string; real: string }) {
     return (
-        <div className="flex items-center justify-between text-sm">
-            <span className="text-dark-400">{label}</span>
-            <div className="flex items-center gap-2">
-                <span className="text-dark-500 line-through">{polluted}</span>
-                <ArrowRight className="w-3 h-3 text-success-400" />
-                <span className="text-success-400 font-bold">{real}</span>
+        <div className="group/item">
+            <div className="flex justify-between items-center text-sm mb-1">
+                <span className="text-gray-400 group-hover/item:text-white transition-colors">{label}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-dark-950/50 p-1.5 rounded-lg border border-white/5">
+                <div className="flex-1 flex flex-col items-center border-r border-white/5 px-2">
+                    <span className="text-[10px] text-gray-500 line-through">{polluted}</span>
+                </div>
+                <ArrowRight className="w-3 h-3 text-emerald-500" />
+                <div className="flex-1 flex flex-col items-center px-2">
+                    <span className="text-sm font-bold text-emerald-400">{real}</span>
+                </div>
             </div>
         </div>
     )
 }
 
 function TrafficBar({ label, pct, color, icon }: { label: string; pct: number; color: string; icon: string }) {
+    // Component preserved for other usages if needed, though replaced in Hero
     const colors = {
-        success: 'bg-success-500',
-        primary: 'bg-primary-500',
-        accent: 'bg-accent-500',
-        danger: 'bg-danger-500',
+        success: 'bg-emerald-500',
+        primary: 'bg-growthz-blue',
+        accent: 'bg-purple-500',
+        danger: 'bg-red-500',
     }
     return (
         <div>
             <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-dark-300">{icon} {label}</span>
-                <span className="text-white font-medium">{pct}%</span>
+                <span className="text-gray-400 flex items-center gap-2">{icon} {label}</span>
+                <span className="text-white font-mono">{pct}%</span>
             </div>
-            <div className="h-2 bg-dark-700 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-dark-800 rounded-full overflow-hidden">
                 <div className={`h-full ${colors[color as keyof typeof colors]} rounded-full`} style={{ width: `${pct}%` }} />
             </div>
         </div>
     )
 }
 
-function OpportunityItem({ agent, visits, trend }: { agent: string; visits: string; trend: string }) {
+function OpportunityItem({ agent, visits, trend, icon }: { agent: string; visits: string; trend: string, icon?: React.ReactNode }) {
     return (
-        <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-                <Bot className="w-4 h-4 text-primary-400" />
-                <span className="text-white text-sm">{agent}</span>
+        <div className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 group/item">
+            <div className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded bg-purple-500/10 flex items-center justify-center text-purple-400">
+                    {icon || <Bot className="w-3 h-3" />}
+                </div>
+                <span className="text-gray-300 text-sm font-medium group-hover/item:text-white">{agent}</span>
             </div>
-            <div className="text-right">
-                <div className="text-white text-sm font-medium">{visits}</div>
-                <div className="text-success-400 text-xs">{trend}</div>
+            <div className="text-right flex items-center gap-3">
+                <div className="text-white text-sm font-mono">{visits}</div>
+                <div className="text-emerald-400 text-[10px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">{trend}</div>
             </div>
         </div>
     )
 }
 
 // The Problem Section - From Neil Patel
+// The Problem Section
 function ProblemSection() {
     return (
-        <section id="problem" className="py-20 md:py-32 relative overflow-hidden">
-            <div className="absolute inset-0 bg-dark-900" />
-            <div className="absolute inset-0 bg-dot-pattern opacity-30" />
+        <section id="problem" className="py-20 md:py-32 relative overflow-hidden bg-growthz-bg">
+            <div className="absolute inset-0 bg-grid-pattern opacity-10" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-danger-500/10 border border-danger-500/20 rounded-full mb-6">
-                        <AlertTriangle className="w-4 h-4 text-danger-400" />
-                        <span className="text-sm text-danger-300">The Marketing Measurement Problem</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6">
+                        <AlertTriangle className="w-4 h-4 text-warning-400" />
+                        <span className="text-sm text-gray-300">The Analytics Crisis</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                        Your Analytics Are <span className="text-danger-400">Lying to You</span>
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6">
+                        Your Analytics Are <span className="text-growthz-blue">Lying to You</span>
                     </h2>
-                    <p className="text-lg text-dark-300 max-w-3xl mx-auto">
+                    <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
                         For the first time in a decade, bot traffic has surpassed human traffic.
-                        <span className="text-white font-semibold"> This isn't just a security problem — it's a marketing measurement problem.</span>
+                        <span className="text-white font-medium"> This isn't just a security problem — it's a marketing measurement problem.</span>
                     </p>
                 </div>
 
-                {/* 3 Problems */}
+                {/* 3 Problems Expanded */}
                 <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-16">
                     <ProblemCard
                         icon={<BarChart3 className="w-8 h-8" />}
                         stat="51%"
-                        title="Traffic is Now Bots"
-                        description="Your conversion rates, bounce rates, and traffic reports are all skewed by visitors who were never going to buy."
-                        color="danger"
+                        title="Your Funnel is Polluted"
+                        description="Every forgotten dashboard and skewed report stems from one issue: half your visitors aren't people. When bots inflate your sessions, your conversion rates plummet artificially, leading to misguided ad spend and poor strategic decisions."
+                        color="blue"
                     />
                     <ProblemCard
                         icon={<Filter className="w-8 h-8" />}
                         stat="37%"
-                        title="Bad Bots Growing"
-                        description="Bad bot activity is up for the sixth consecutive year. But blocking ALL bots means missing real opportunities."
-                        color="warning"
+                        title="Good Bots vs. Bad Bots"
+                        description="Not all non-human traffic is malicious. While scrapers and fraudsters drain resources, AI shopping agents and search crawlers are vital for discovery. Legacy tools block everything blindly—costing you visibility in the AI era."
+                        color="blue"
                     />
                     <ProblemCard
                         icon={<ShoppingCart className="w-8 h-8" />}
                         stat="$500B"
-                        title="AI Commerce by 2030"
-                        description="AI agents don't just research — they buy. ChatGPT, Perplexity, and Amazon's 'Buy for Me' are becoming the new point of sale."
-                        color="accent"
+                        title="The Rise of Agentic Commerce"
+                        description="We are entering a new paradigm where AI agents don't just browse—they buy. Platforms like ChatGPT, Perplexity, and autonomous shopping bots are becoming the new 'users'. Ignoring them means ignoring the fastest-growing segment of e-commerce."
+                        color="blue"
                     />
                 </div>
 
                 {/* The Shift - Quote */}
                 <div className="max-w-4xl mx-auto">
-                    <div className="glass-card p-8 border-primary-500/30">
-                        <div className="flex items-start gap-4">
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shrink-0">
-                                <Lightbulb className="w-8 h-8 text-white" />
+                    <div className="group relative p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-growthz-blue/30 transition-all duration-300">
+                        {/* Glow effect */}
+                        <div className="absolute inset-0 bg-growthz-blue/5 blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                        <div className="relative flex items-start gap-6">
+                            <div className="w-16 h-16 rounded-full bg-growthz-blue/20 flex items-center justify-center shrink-0">
+                                <Lightbulb className="w-8 h-8 text-growthz-blue" />
                             </div>
                             <div>
-                                <p className="text-xl md:text-2xl text-white mb-4 leading-relaxed">
-                                    "This isn't a temporary spike — it's a <span className="text-primary-400">permanent structural shift</span> that's breaking your marketing metrics,
+                                <p className="text-xl md:text-2xl text-white mb-4 leading-relaxed font-light">
+                                    "This isn't a temporary spike — it's a <span className="text-growthz-blue font-medium">permanent structural shift</span> that's breaking your marketing metrics,
                                     distorting your funnel data, and changing how customers discover and buy from you."
                                 </p>
-                                <div className="flex items-center gap-4">
-                                    <div>
-                                        <p className="text-dark-400">The new reality:</p>
-                                        <p className="text-white font-semibold">AI agents — not humans — are often your most important audience.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,6 +420,7 @@ function ProblemCard({ icon, stat, title, description, color }: { icon: React.Re
         danger: 'from-danger-500 to-danger-600',
         warning: 'from-warning-500 to-warning-600',
         accent: 'from-accent-500 to-accent-600',
+        blue: 'from-growthz-blue to-accent-600',
     }
 
     return (
@@ -433,84 +453,90 @@ function SolutionSection() {
                     </h2>
                 </div>
 
-                {/* 3 Pillars */}
+                {/* 3 Pillars Expanded */}
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Pillar 1: Real Metrics */}
-                    <div className="group glass-card p-8 border-success-500/20 hover:border-success-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-success-500/10">
-                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
-                            <div className="absolute inset-0 bg-success-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <img src="/images/analytics-icon.png" alt="Analytics 3D Icon" className="w-full h-full object-contain relative z-10" />
+                    <div className="group glass-card p-10 border-white/5 hover:border-growthz-blue/30 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-growthz-blue/10">
+                        <div className="w-24 h-24 mb-8 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-growthz-blue/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="relative w-full h-full bg-gradient-to-br from-growthz-blue/20 to-transparent rounded-2xl flex items-center justify-center border border-white/10">
+                                <BarChart3 className="w-10 h-10 text-growthz-blue" />
+                            </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">1. Real Metrics</h3>
-                        <p className="text-dark-300 mb-6 leading-relaxed">
-                            Your "low conversion rate" might actually be a data quality problem. See exactly how bot traffic inflates sessions, distorts bounce rates, and makes your funnel look worse than it really is.
+                        <h3 className="text-2xl font-bold text-white mb-4">1. Uncover Your True Metrics</h3>
+                        <p className="text-gray-400 mb-8 leading-relaxed h-24">
+                            Stop optimizing for ghosts. By filtering out non-human sessions, you reveal the actual behavior of your potential customers. Suddenly, your "low conversion rate" might look healthy, and your "high bounce rate" might be a myth.
                         </p>
-                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-success-500" />
-                                <span>Human-only conversion rate</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-success-500" />
-                                <span>True bounce rate</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-success-500" />
-                                <span>Accurate session duration</span>
-                            </div>
-                        </div>
+                        <ul className="space-y-4 pt-8 border-t border-white/10">
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Human-only conversion baselines</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Accurate session duration & engagement</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Clean data for better ad targeting</span>
+                            </li>
+                        </ul>
                     </div>
 
                     {/* Pillar 2: Traffic Clarity */}
-                    <div className="group glass-card p-8 border-primary-500/20 hover:border-primary-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary-500/10">
-                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
-                            <div className="absolute inset-0 bg-primary-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <img src="/images/bot-icon.png" alt="Bot Detection 3D Icon" className="w-full h-full object-contain relative z-10" />
+                    <div className="group glass-card p-10 border-white/5 hover:border-growthz-blue/30 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-growthz-blue/10">
+                        <div className="w-24 h-24 mb-8 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-growthz-blue/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="relative w-full h-full bg-gradient-to-br from-growthz-blue/20 to-transparent rounded-2xl flex items-center justify-center border border-white/10">
+                                <Layers className="w-10 h-10 text-growthz-blue" />
+                            </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">2. Traffic Clarity</h3>
-                        <p className="text-dark-300 mb-6 leading-relaxed">
-                            Learn how to differentiate good bots (AI crawlers, shopping agents) from bad bots (fraudsters, scrapers). Understand why blocking all bots is no longer an option.
+                        <h3 className="text-2xl font-bold text-white mb-4">2. Granular Traffic Clarity</h3>
+                        <p className="text-gray-400 mb-8 leading-relaxed h-24">
+                            We don't just say "Bot". We tell you *which* bot. Is it Google crawling your SEO? Is it a scraper stealing your prices? Or is it an AI agent researching your product for a user? Specificity changes your strategy.
                         </p>
-                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <div className="w-6 h-6 rounded bg-success-500/20 flex items-center justify-center text-xs">👤</div>
-                                <span>Human Visitors</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <div className="w-6 h-6 rounded bg-primary-500/20 flex items-center justify-center text-xs">🤖</div>
-                                <span>AI Agents (ChatGPT, Claude...)</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <div className="w-6 h-6 rounded bg-accent-500/20 flex items-center justify-center text-xs">🔍</div>
-                                <span>Search Bots (Google, Bing)</span>
-                            </div>
-                        </div>
+                        <ul className="space-y-4 pt-8 border-t border-white/10">
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-growthz-blue/20 flex items-center justify-center text-xs text-growthz-blue">👤</div>
+                                <span>Real Human Visitors</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-growthz-blue/20 flex items-center justify-center text-xs text-growthz-blue">🤖</div>
+                                <span>LLM Agents (ChatGPT, Claude)</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <div className="w-6 h-6 rounded bg-growthz-blue/20 flex items-center justify-center text-xs text-growthz-blue">bad</div>
+                                <span>Malicious Scrapers & Fraud</span>
+                            </li>
+                        </ul>
                     </div>
 
                     {/* Pillar 3: Opportunity */}
-                    <div className="group glass-card p-8 border-accent-500/20 hover:border-accent-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-500/10">
-                        <div className="w-24 h-24 mb-6 relative group-hover:scale-110 transition-transform duration-500">
-                            <div className="absolute inset-0 bg-accent-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <img src="/images/rocket-icon.png" alt="Opportunity 3D Icon" className="w-full h-full object-contain relative z-10" />
+                    <div className="group glass-card p-10 border-white/5 hover:border-growthz-blue/30 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-growthz-blue/10">
+                        <div className="w-24 h-24 mb-8 relative group-hover:scale-110 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-growthz-blue/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="relative w-full h-full bg-gradient-to-br from-growthz-blue/20 to-transparent rounded-2xl flex items-center justify-center border border-white/10">
+                                <Rocket className="w-10 h-10 text-growthz-blue" />
+                            </div>
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">3. Opportunity Gaps</h3>
-                        <p className="text-dark-300 mb-6 leading-relaxed">
-                            AI agents don't just research — they buy. With agentic commerce projected to hit $300-500B by 2030, discover how platforms like ChatGPT and Perplexity are becoming the new point of sale.
+                        <h3 className="text-2xl font-bold text-white mb-4">3. Seize the AI Opportunity</h3>
+                        <p className="text-gray-400 mb-8 leading-relaxed h-24">
+                            The future of SEO isn't just ranking on Google—it's being recommended by AI. Botfic gives you an "AI Visibility Score" and actionable tips to ensure your brand is the top answer when agents are asked for recommendations.
                         </p>
-                        <div className="space-y-3 pt-6 border-t border-dark-700/50">
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
-                                <span>AI Visibility Score</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
-                                <span>Which AI agents visit you</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-dark-300 group-hover:text-white transition-colors">
-                                <CheckCircle2 className="w-5 h-5 text-accent-500" />
-                                <span>Optimization recommendations</span>
-                            </div>
-                        </div>
+                        <ul className="space-y-4 pt-8 border-t border-white/10">
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Optimize content for LLM training data</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Track "Referral from AI" metrics</span>
+                            </li>
+                            <li className="flex items-center gap-3 text-gray-300 group-hover:text-white transition-colors">
+                                <CheckCircle2 className="w-5 h-5 text-growthz-blue" />
+                                <span>Stay ahead of Agentic SEO trends</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -649,24 +675,25 @@ function FeaturesSection() {
     ]
 
     return (
-        <section className="py-20 md:py-32 relative">
-            <div className="absolute inset-0 bg-dark-900" />
+        <section className="py-20 md:py-32 relative bg-dark-950">
+            {/* Soft gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-growthz-bg via-dark-900 to-growthz-bg" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                        Everything You Need for the <span className="gradient-text">Bot-First Era</span>
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4">
+                        Everything You Need for the <span className="text-growthz-blue">Bot-First Era</span>
                     </h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {features.map((feature, i) => (
-                        <div key={i} className="feature-card group">
-                            <div className="icon-wrapper mb-4 group-hover:scale-110 transition-transform duration-300">
-                                <span className="text-primary-400">{feature.icon}</span>
+                        <div key={i} className="group p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-growthz-blue/50 hover:bg-white/10 transition-all duration-300">
+                            <div className="w-12 h-12 rounded-xl bg-growthz-blue/20 flex items-center justify-center text-growthz-blue mb-4 group-hover:scale-110 transition-transform duration-300">
+                                {feature.icon}
                             </div>
                             <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                            <p className="text-dark-400">{feature.description}</p>
+                            <p className="text-gray-400 leading-relaxed">{feature.description}</p>
                         </div>
                     ))}
                 </div>
@@ -707,18 +734,19 @@ function HowItWorksSection() {
                     </h2>
                 </div>
 
+                {/* Steps Expanded */}
                 <div className="grid md:grid-cols-3 gap-8">
                     {steps.map((step, i) => (
                         <div key={i} className="relative">
                             {i < steps.length - 1 && (
-                                <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-primary-500 to-transparent z-0" />
+                                <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-growthz-blue to-transparent z-0 opacity-20" />
                             )}
-                            <div className="relative z-10 text-center group">
-                                <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/20">
-                                    <span className="text-3xl font-bold text-white">{step.step}</span>
+                            <div className="relative z-10 text-center group bg-white/5 p-8 rounded-2xl border border-white/10 hover:border-growthz-blue/30 transition-all duration-300 hover:-translate-y-1">
+                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-growthz-blue/10 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-growthz-blue/5 border border-growthz-blue/20">
+                                    <span className="text-3xl font-bold text-growthz-blue">{step.step}</span>
                                 </div>
-                                <h3 className="text-xl font-semibold text-white mb-3">{step.title}</h3>
-                                <p className="text-dark-400 max-w-xs mx-auto">{step.description}</p>
+                                <h3 className="text-xl font-bold text-white mb-4">{step.title}</h3>
+                                <p className="text-gray-400 leading-relaxed text-sm">{step.description}</p>
                             </div>
                         </div>
                     ))}
@@ -789,43 +817,43 @@ function PricingSection() {
     ]
 
     return (
-        <section id="pricing" className="py-20 md:py-32 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900 to-dark-950" />
+        <section id="pricing" className="py-20 md:py-32 relative overflow-hidden bg-growthz-bg">
+            <div className="absolute inset-0 bg-grid-pattern opacity-10" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4">
                         Simple, Transparent Pricing
                     </h2>
-                    <p className="text-lg text-dark-300">14-day free trial. No credit card required.</p>
+                    <p className="text-lg text-gray-400">14-day free trial. No credit card required.</p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                     {plans.map((plan, i) => (
                         <div
                             key={i}
-                            className={`relative glass-card p-8 ${plan.popular ? 'border-primary-500/50 scale-105' : ''}`}
+                            className={`relative group p-8 rounded-2xl bg-white/5 border transition-all duration-300 ${plan.popular ? 'border-growthz-blue/50 scale-105 shadow-2xl shadow-growthz-blue/10' : 'border-white/10 hover:border-growthz-blue/30'}`}
                         >
                             {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary-500 to-accent-500 text-white text-sm font-bold rounded-full">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-growthz-blue text-white text-sm font-bold rounded-full shadow-lg">
                                     Most Popular
                                 </div>
                             )}
 
                             <div className="text-center mb-8">
                                 <h3 className="text-xl font-semibold text-white mb-2">{plan.name}</h3>
-                                <p className="text-dark-400 text-sm mb-4">{plan.description}</p>
+                                <p className="text-gray-400 text-sm mb-4">{plan.description}</p>
                                 <div className="flex items-baseline justify-center gap-1">
                                     <span className="text-4xl font-bold text-white">{plan.price}</span>
-                                    <span className="text-dark-400">{plan.period}</span>
+                                    <span className="text-gray-400">{plan.period}</span>
                                 </div>
                             </div>
 
                             <ul className="space-y-3 mb-8">
                                 {plan.features.map((feature, j) => (
                                     <li key={j} className="flex items-start gap-3">
-                                        <CheckCircle2 className="w-5 h-5 text-success-500 shrink-0 mt-0.5" />
-                                        <span className="text-dark-300">{feature}</span>
+                                        <CheckCircle2 className={`w-5 h-5 shrink-0 mt-0.5 ${plan.popular ? 'text-growthz-blue' : 'text-gray-500'}`} />
+                                        <span className="text-gray-300">{feature}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -833,8 +861,8 @@ function PricingSection() {
                             <Link
                                 href="/signup"
                                 className={`block w-full py-3 text-center font-semibold rounded-xl transition-all duration-300 ${plan.popular
-                                    ? 'bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-400 hover:to-accent-400 text-white hover:shadow-glow'
-                                    : 'bg-dark-700 hover:bg-dark-600 text-white'
+                                    ? 'bg-growthz-blue hover:bg-blue-600 text-white shadow-lg shadow-growthz-blue/25'
+                                    : 'bg-white/10 hover:bg-white/20 text-white'
                                     }`}
                             >
                                 {plan.cta}
@@ -1110,9 +1138,43 @@ function Footer() {
 
 // Main Page
 export default function LandingPage() {
+    const [classification, setClassification] = useState<{ label: string; agent?: string } | null>(null)
+
+    useEffect(() => {
+        const handleClassification = (e: CustomEvent) => {
+            setClassification(e.detail)
+        }
+        window.addEventListener('botific-classification', handleClassification as EventListener)
+        return () => window.removeEventListener('botific-classification', handleClassification as EventListener)
+    }, [])
+
     return (
         <main className="relative">
+            <Script src="/tracker.js" data-site-id="demo-landing" strategy="afterInteractive" />
+
             <Navbar />
+
+            {/* Live Classification Demo Pill */}
+            <div className={`fixed bottom-6 right-6 z-50 transition-all duration-500 transform ${classification ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                <div className="bg-dark-900/90 backdrop-blur-xl border border-white/10 p-4 rounded-xl shadow-2xl flex items-center gap-4 max-w-sm">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${classification?.label === 'human' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-growthz-blue/20 text-growthz-blue'}`}>
+                        {classification?.label === 'human' ? <Users className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
+                    </div>
+                    <div>
+                        <div className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Live Identification</div>
+                        <div className="text-white font-medium flex items-center gap-1.5">
+                            You are identified as:
+                            <span className={classification?.label === 'human' ? 'text-emerald-400' : 'text-growthz-blue'}>
+                                {classification?.label === 'human' ? 'Human' : (classification?.agent || 'Bot')}
+                            </span>
+                        </div>
+                    </div>
+                    <button onClick={() => setClassification(null)} className="text-gray-500 hover:text-white">
+                        <X className="w-4 h-4" />
+                    </button>
+                </div>
+            </div>
+
             <HeroSection />
             <ProblemSection />
             <SolutionSection />
